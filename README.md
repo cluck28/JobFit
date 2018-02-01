@@ -19,7 +19,7 @@ After performing data exploration and transforming some of the relevant features
 In this problem I needed a label for each job transition if it was possible or impossible. To generate this dataset I scraped resumes from Indeed.com. The script that scrapes the resumes is contained in ./DataProcessing/ScrapeResumes.ipynb.
 
 <h1>Scrape Job Posts</h1>
-The function that scrapes job posts is contained in the web application. I have included a stand alone script that processes job posts and saves them to a database in ./DataProcessing/IndeedScraper.ipynb.
+The function that scrapes job posts is contained in the web application. I have included a stand alone script that processes job posts and saves them to a database in ./DataProcessing/IndeedScraper_v5.ipynb.
 
 <h1>Train a Model</h1>
 I train the model in the file ./DataProcessing/ClassificationAlgorithm.ipynb. The model results are pickled and can be uploaded to the server for use in the web application.
