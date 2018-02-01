@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+
+<br></br>
+<br></br>
+
+<div class="container">
+    <div class="jumbotron" height="500">
+        <h1>About JobFit</h1>
+    </div>
+    
+          <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="col-lg-4">
+          <center>
+          <img class="img-circle" src="/static/circle4.jpg" alt="Generic placeholder image" width="140" height="140">
+          <h2>Match</h2>
+          <p>Using high quality survey data we determine the overlap in the skill profile for an employee looking
+          to upgrade their career and start their dream job.</p>
+          </center>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <center>
+          <img class="img-circle" src="/static/circle3.jpg" alt="Generic placeholder image" width="140" height="140">
+          <h2>Learn</h2>
+          <p>Our algorithm combines static survey data with a real-time snapshot of the job market to identify 
+          the most relevant missing skills between you and your dream job.</p>
+          </center>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <center>
+          <img class="img-circle" src="/static/circle5.jpg" alt="Generic placeholder image" width="140" height="140">
+          <h2>Succeed</h2>
+          <p>Our model uses information cataloguing successful job transitions to provide accurate impressions
+          of the difficulty of a given job transition.</p>
+          </center>
+        </div><!-- /.col-lg-4 -->
+      </div>
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>The Data</h2>
+            <p>The primary source of data I used to build this application was the O*NET database. The O*NET database is 
+            considered the nation’s primary source of occupational information. The database is quite extensive but static
+            and difficult to use. However, it does serve as a useful starting place for investigating trends in jobs. I
+            used a number of tables from this database. One table was the list of Alternate Titles for jobs. This dataset lists the 
+            primary job title and a number of related job titles. I also used the 
+            Skills database which provides a list of 35 skill categories and for each category assigns a numerical score
+            representing the importance of that skill for the each job title. Similarly, I use the Work Activities table
+            which provides a list of 41 work activity categories and identifies a numerical score indicating the importance
+            of each work activity to each job title. For some text-processing applications I also use 
+            the IWA and DWA tables which contain short descriptions of the work activities associated with the work activity 
+            categories.</p>
+
+            <p>In addition to the O*NET database I used data scraped from Indeed.com. I first built a tool using BeautifulSoup 
+            and Selenium to scrape a selection of job posts given a search term and location (location options aren’t currently
+            built into the application). I collected meta-data from each post such as the job title, the location, the company name, the date it
+            was posted and the text from the body of the post.</p>
+
+            <p>Lastly, I scraped resumes from Indeed.com. As I was constrained by time and by the amount of data Indeed would
+            allow to be scraped before blocking my IP I only scraped the list of previous job titles from each resume. 
+            Effectively I collected a list of job transitions. This process has been slow and is still ongoing to improve the 
+            performance of my model.</p>
+
+            <h2>The Algorithm</h2>
+            <p>The model trained to predict the success of a given job transition is a logistic regression. Given an input of the
+            difference in the skill profiles for a job transition it outputs a probability that the transition belongs to the successful
+            transition class or the unsuccessful transition class. This provides the "ease of transition" score.</p>
+            
+            <p>The algorithm also returns a rank ordered list of recommended skills that the user may want to improve in order to better
+            prepare for their desired job transition. The ranking of the skills is determined by the difference between the value for the
+            dream job as compared to the current job weighted by the importance of the skill in the dream job.</p>
+            
+            <p>Lastly, the JobFit engine rates skills as "hot or not" based on the frequency at which they appear in job posts currently posted
+            for the dream job on Indeed.com. The skills are extracted through keyword matching using the IWA and DWA tables in the O*NET database.
+            Job posts typically contain keywords related to work activities as opposed to skills and so the algorithm counts the frequency at which
+            these work activities occur and then maps them onto skills. "Hot" skills are skills that appear with a greater than average frequency
+            across a sample of ten job posts for the dream job at the time of the match.</p>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block content %}
+<br></br>
+<br></br>
+<div class="container">
+    <div class="jumbotron" height="500">
+        <h1>Hedging Securities</h1>
+    </div>
+    
+    <div id="accordion" class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Brief Summary</a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>To minimize the risk in an investment financial organizations will often utilize a technique called hedging. A common
+                example of hedging is buying insurance on your home to protect yourself against theft or random disaster. In the context
+                of securities, a hedge can be used to reduce the risk in an investment. For instance, a set of securities can be purchased
+                such that they mitigate (or cancel) the fluctuations in a target investement. If the target increases in value, the hedge
+                should also increase. In this way the risk in holding the target investment is reduced.</p>
+                <p>The purpose of this exercise is to construct a simple model that hedges a proxy basket of four securities to track the
+                behaviour of a target investment. At its core, this algorithm predicts the behaviour of securities after a time <em>T</em>. By
+                minimizing the error in this prediction a basket can be constructed that minimizes the risk of the hedge.</p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Technical Summary</a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <p>The data set I am working with has the end of day price for 443 securities as well as the corresponding end of day price
+                for the 4 target securities. As the data is organized chronologically by trading day (i.e., weekends are skipped) the date
+                information can be replaced by a dummy array that is sampled evenly.</p>
+                <p>The first step in working with this data is to find and fill in any missing end of day prices. I do this by linearly 
+                extrapolating from the two previous days worth of data. Alternatively, the missing data could be filled in with a simple
+                moving average. Filling the missing prices using information in the preceding data is an ideal method as it allows this
+                cleaning algorithm to be deployed on real-time time series data.</p>
+                <p>Having cleaned the data I began exploring it by plotting sample security prices. In a cursory examination of the trends
+                in the time series data it appeared that there were some salient features I needed to be aware of:
+                <ul>
+                    <li>How noisy is the data? Some data sets are relatively smooth while others have large random fluctuations. The noisiness
+                    will impact the certainty of the model's predictions.</li>
+                    <li>Are there any large and sudden changes in the security? Some securities have large and sudden decreases (or increases)
+                    in their value. A good modle will try to minimize the effect of these volatile securities.</li>
+                    <li>Do changes in the data look linear? Often a linear regression is simplest to describe small chunks of data.</li>
+                </ul>
+                </p>
+                <p>I include a plot of some characteristic data exhibiting these features below. In both sets of time series data shown
+                the trends are likely best approximated by a linear function over a short period of time. However, the blue data exhibits large
+                oscillatory behaviour which would result in a large uncertainty when performing a linear fit. While it may be useful to make
+                use of this periodic behaviour to make a profit (i.e., buy low and sell high), this security is likely too variable to be of
+                much use in this project.</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/dataexploration.png" class="img-responsive" alt="Sample securities">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>The time series behaviour of two sample securities are shown. By eye, the blue data appears more volatile than the
+                    red data.</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                </div>
+                <p>The first step in building a model is to accurately predict the behaviour of a test security after time <em>T</em>. I started with the
+                naive approach of performing a linear regression using <em>n</em> points preceding the current time <em>t</em> and extrapolating forward to
+                time <em>t+T</em> using the results of the regression. Here <em>n</em> is a hyper parameter that can be chosen at the discretion of the user
+                to optimize the performance of the prediction. The model performance also depends on the prediction time <em>T</em>. Varying these parameters
+                is shown in the plots below.</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/residual_5.png" class="img-responsive" alt="Residual for n=5, T=5">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/residual_25.png" class="img-responsive" alt="Residual for n=25, T=5">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/residual_25_T25.png" class="img-responsive" alt="Residual for n=25, T=25">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>The residual (true value - predicted value) for (from left to right): n=5 and T=5, n=25 and T=5, n=25 and T=25.
+                    The red data is from the smooth security shown above while the blue data is from the volatile security shown above.</em></p>
+                    </div>
+                </div>
+                <p>As one might expect, as <em>T</em> increases the residuals grow. It is harder to accurately predict the behaviour of the 
+                security over a long period of time. The behaviour as <em>n</em> is varied is more complicated. It seems that there is a local
+                minimum in the sum of the residuals as a function of <em>n</em> that depends on the volatility of the given security.</p>
+                <p>Interestingly, there is substantial structure to the residuals. In particular, there appears to be a sinusoidal oscillation.
+                When fitting the residuals with a sinusoid I found that the period of the oscillation was approximately <em>n</em>. Perhaps some
+                regularization is needed to rectify this.</p>
+                <p>To contrast the linear extrapolation I also implement an extrapolation built using an exponential moving average. An exponential
+                moving average is calcualted by weighting the most recent data more heavily in an average. I implement this algorithm by first calculating
+                the weights and then calculating the exponential moving average for time <em>t</em>. To propagate the algorithm forward in time I use this
+                calculated value as the predicted value for time <em>t+1</em>. I then calculate the exponential moving average again at time <em>t+1</em> and
+                use this value for time <em>t+2</em>. I iterate until I reach time <em>t+T</em>. The performance of the exponential moving average, a simple moving
+                average, and the linear extrapolation are shown below for <em>n</em>=25 and <em>T</em>=5.</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/compmodels.png" class="img-responsive" alt="Comparison of models">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>A comparison of various extrapolation models for the smooth data shown above. Here n=25 and T=5. Green data shows a 
+                    simple moving average, red data shows the exponential moving average and blue data shows the linear extrapolation.</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                </div>
+                <p>The performance of the simple moving average and the exponential moving average is very similar. The exponential moving average slightly outperforms
+                the simple moving average. The linear extrapolation also tracks the behaviour of the exponential moving average quite well although the magnitude of the
+                residuals is slightly larger.</p>
+                <p>Having found a model that works relatively well on well-behaved data I began to move forward to building a basket of securities
+                to track the target instrument's behaviour. Selecting an optimal basket is complicated by the feature identified above: the volatility
+                of the data significanlty impacts the quality of the prediction. As the requirement of this hedge is to minimize risk I want to 
+                identify securities that are not volatile. One quick measure of the volatility of a security is the standard deviation. As the predictive model
+                looks at a moving set of preceding data, the measure of a security's volatility will vary in time to accurately reflect the data used
+                in the prediction.</p>
+                <p>To implement the algorithm that constructs the basket I first calculate the standard deviation for each security using 
+                a number of points <em>n</em> before the current time <em>t</em>. I order these securities from least volatile to most volatile. I then
+                use the exponential moving algorithm to predict the security price after time <em>T</em> for the <em>m</em> least volatile securities.
+                After this step I have a list of the <em>m</em> least volatile securities ordered from least to most volatile.</p>
+                <p>The other ingredient in building the basket is predicting the change in the target. I use the exponential moving average to
+                predict the change in the target price after time <em>T</em>. Having determined this predicted change I can build a basket from
+                the securities such that their sum matches the change within some tolerance. To do this I find all the permutations of four 
+                securities and their total cost. If the cost is within the tolerance of the change in the target I evaluate the total volatility
+                and choose the permutation that is the least volatile. If no permutations are found that are within the tolerance of the change in
+                the target I increase the tolerance (first doubling, then tripling, etc.) until a basket is found.</p>
+                <p>To validate the model I follow a mock trading algorithm:
+                <ol>
+                    <li>Initialize the model with a random basket and on a random day in the data set.</li>
+                    <li>Sell the basket and buy the target.</li>
+                    <li>Predict the expected change in the target after time <em>T</em>.</li>
+                    <li>Wait <em>T</em> days.</li>
+                    <li>Find the basket that will best match the predicted change in the target when sold.</li>
+                    <li>Sell the target and buy the basket.</li>
+                    <li>Wait <em>T</em> days.</li>
+                    <li>Sell the basket and buy the target.</li>
+                </ol>
+                After this point the performance of the basket can be evaluated against the predicted behaviour of the target and the true behaviour of
+                the target.
+                </p>
+                <p>I repeat this validation algorithm <em>N</em> times while varying the other model parameters to minimize the error in the
+                prediction. The best performance is shown below. The difference from the true target is within +/-$1 while the difference from
+                the predicted target is within +/-$0.5.</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/best_perform1.png" class="img-responsive" alt="Best model performance">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>The performance of the model. Here n=25, T=5, m=20 and the tolerance is 0.001.</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                </div>
+                <p>In conclusion, I have built a fast and versatile algorithm for hedging securities to track a target's behaviour. In addition,
+                this model can be easily extended to trade such that a profit is made.</p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Further Reading</a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>Investopedia was a useful resource to learn about the financial practices I was duplicating in this exercise. In particular,
+                I learned about <a href="http://www.investopedia.com/terms/h/hedge.asp" target="_blank">hedging</a>, 
+                <a href="http://www.investopedia.com/terms/e/ema.asp" target="_blank">exponential moving averages</a> and the 
+                <a href="http://www.investopedia.com/terms/v/volatility.asp" target="_blank">volatility</a> of stocks.</a></p>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+{% endblock %}

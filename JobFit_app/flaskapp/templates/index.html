@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <br></br>
+    <br></br>
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+      <!-- START THE FEATURETTES -->
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 id="user" class="featurette-heading">Get Matching:<span class="text-muted">Finding your dream job starts with just a click</span></h2>
+          <p class="lead">Planning for a job transition has never been easier with JobFit. Our skill recommendation algorithm is trained
+          to give you the most important information before you set out on the job hunt.
+          </p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive center-block img-rounded" src="/static/Match.jpg" alt="Job Match Image">
+        </div>
+        <br></br>
+          <form name="Job" action="{{ url_for('jobFit') }}" method="POST">
+            <div class="row">
+              <div class="col-sm-6 col-md-4 col-lg-6">
+              <h2>Current Job</h2>
+                <div class="input-group">
+                  <input type="text" class="form-control" style="width:500px;" name="Job_1" placeholder="Current job title...">
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-4 col-lg-6">
+                <h2>Dream Job</h2>
+                <div class="input-group">
+                  <input type="text" class="form-control" style="width:500px;" name="Job_2" placeholder="Dream job title...">
+                </div>
+                <br></br>
+              <button class="btn btn-lg btn-primary" type="submit">myFit</button>
+              </div>
+            </div>
+          </form>
+          <p> {{error_msg}} </p>
+        
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7 col-md-push-5">
+          <h2 id="corporate" class="featurette-heading">Corporate Solutions:<span class="text-muted">Keep your top talent</span></h2>
+          <p class="lead">The JobFit algorithm can be integrated into a corporate job bank allowing your HR team to leverage
+          data when planning for vertical and lateral moves of your talent.</p>
+        </div>
+        <div class="col-md-5 col-md-pull-7">
+          <img class="featurette-image img-responsive center-block img-rounded" src="/static/Corporate.jpg" alt="Corporate Image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+{% endblock %}

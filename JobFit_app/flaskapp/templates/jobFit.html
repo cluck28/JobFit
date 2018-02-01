@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<br></br>
+<br></br>
+
+    <div class="container marketing">
+    
+      <div class="row">
+        <div class="col-lg-12">
+            <h2>Transition from {{job1}} to {{job2}}</h2>
+        </div>
+      </div>
+      <br></br>
+      <div class="row">
+          <div class="col-lg-4">
+              <div class="panel panel-info">
+                  <div class="panel-heading"><h3>Ease of Transition</h3></div>
+                  <div class="panel-body">
+                  <img class="img-responsive" src="/static/{{score}}">
+                  <p>The probability of success for this transition is estimated to be {{prob}}</p>
+                  </div>
+              </div>
+          </div>
+          <div class="col-lg-8">
+              <div class="panel panel-info">
+                  <div class="panel-heading"><h3>Recommended Skills</h3></div>
+                  <div class="panel-body">
+                      <ol>
+                      {% for skill,score,progress_val,skill_rating,hot,work_act in skills_out %}
+                      <h1><li><a data-toggle="tooltip" data-placement="top" title="" data-original-title="Example activity: {{work_act}}"> {{skill}} </a><img style="width:40px;" src="/static/{{hot}}.png" alt=""></h1>
+                      <div class="progress">
+                          <div class="progress-bar {{progress_val}} progress-bar-striped" role="progressbar" aria-valuenow="{{score}}" aria-valuemin="0" aria-valuemax="100" style="width:{{score}}%">
+                                {{score}} %
+                          </div>
+                      </div>
+                      </li>
+                      {% endfor %}
+                      </ol>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-4">
+              <h2>Ease of transition</h2>
+              <p>gives an indication of how likely this job transition is to occur. The prediction is based on job transitions
+              recorded in existing resumes.</p>
+          </div>    
+          <div class="col-lg-4">
+              <h2>Skill recommendation</h2>
+              <p>returns a list of the skills that require the most improvement taking into account the importance of that skill
+              to the dream job. The progress bar shows how much work is still required to level up your career.</p>
+          </div>    
+          <div class="col-lg-4">
+              <h2>Hot skills</h2>
+              <p>are measured using a snapshot of current job posts for the dream job. Is a skill appears more times and in more
+              posts, JobFit will let you know so that you can match your skills with current market demand.</p>
+          </div>    
+      </div>
+          
+
+{% endblock %}

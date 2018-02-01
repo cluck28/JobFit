@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block content %}
+<br></br>
+<br></br>
+<div class="container">
+    <div class="jumbotron" height="500">
+        <h1>Predicting Successful TED Talks</h1>
+    </div>
+    
+    <div id="accordion" class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Brief Summary</a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>This project was motivated by my desire to understand what makes a good presentation. As a researcher and educator I 
+                have always worked to effectively communicate my ideas in understandable and accessible ways. TED talks seem to embody 
+                the spirit of outreach and effective academic communication and as such are an ideal sample to use to understand what 
+                makes a good presentation. In particular this project seeks to generate a predictive model that will determine which TED
+                talks will be a success or receive a high number of views. This model may also be extended to predict successful videos
+                in other genres given a similarly structured training set.</a></p>
+                <p>To identify successful models a number of parameters are considered; from which category "tags" are assigned to a video
+                to the popularity of related videos. The challenge in working with this data set is the vast amount of information. Determining
+                which attributes are relevant and help appropriately segment the data set has made up most of the work in this project.
+                After identifying the important attributes in the data set a random forest is trained to predict if videos will be succesful.
+                Along the way, the data tells an interesting story about the viewing habits of individuals who watch TED talks.</p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Technical Summary</a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <p>I began by exploring some of the attributes associated with each video. There were a few parameters I identified as 
+                potentially being useful for identifying the most successful videos. Success here is defined as obtaining a number of views greater
+                than the mean number of views for the data set. One such parameter was the date the video was filmed. A
+                related parameter is the date the video was published. Some videos were published from the TED archive and as such fell as outliers
+                when analyzing the data based on the date filmed. To remove these outliers I instead analyse the data based on the date the video
+                was publsihed. These dates fall between 2001 and 2013. I mapped the months to a numerical value such that the dates range from 1.0 
+                (January 2001) to 12.92 (December 2012). The number of views a video received as a function of the date it was published
+                is shown below.</a></p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/DatePub.png" class="img-responsive" alt="Date published data">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>The number of views a video has received as a function of the date it was published. The mean number of views is 600000 views 
+                    (0.06 on the y-axis).</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                </div>
+                <p>I began to try to divide the data set based on the date published to maximize the information gain. The information gain is defined as
+                the weighted change in entropy of the parent set as compared to the children sets. See the links below for more information.
+                I segmented the data based off of various dates and calculated the information change in each case. Surprisingly, the greatest information
+                gain occurred for a segmentation at videos published before January 2004. This did not provide particularly even subsets for further analysis
+                (in terms of size). The first practically useful segmentation based on date and with a large information gain was at January 2010. I currently 
+                use this published by date to assign a flag to videos: 1 if the video was published before this date and 0 if it was published after.</p>
+                <p>Another attribute that I suspected would contribute to the number of views a video received was the category it was tagged with. This is especially
+                important as TED videos were organized on their web page grouped by categories and so I expect clusters of videos with similar themes to attract similar
+                amounts of attention. The immediate problem I identified was that there were 300 unique tags for the videos in this data set. I followed the approach of 
+                seeking to maximize information gain by segmenting the data set based on the video's tag. In this case, dividing the data set based on whether the 
+                video dealt with Psychology maximised the information gain. However, as with the date published, this does not segment the data into sufficiently large groups.
+                Instead, a "meta-tag" which groups the existing categories by overarching themes may be more useful to reduce the complexity of the problem. For now I will 
+                leave the category tag alone. I revisit this in my <a href="about-datascience-TED2.html">analysis</a> of TED talk content using natural language processing.</p>
+                <p>An important attribute that likely contributes to the success of a TED talk is the related videos. My next efforts were focused on assigning a cumulative score
+                for each video based off of the number of views related videos received. I calculated this value for each video by determining if the the related videos had been viewed
+                more or less times than the mean number of views for hte data set. If a related video had been viewed more than the mean number of views I added a value of 1. to its score.
+                For a given video, I repeated this analysis for each related video and normalized the score by the total number of related videos. This generated the distribution below. It
+                can be seen that the videos with highly viewed related videos are generally more viewed. However, there are a number of highly viewed videos that did not receive a high score
+                by following this algorithm despite the high number of views they have received. The score I assign here could be improved by weighting each value by the number of views it received
+                instead of just applying a binary classifier.</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/RelatedScore.png" class="img-responsive" alt="Related Video Score">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>The number of views a video has received as a function of the score it receives from related videos. A slight correlation is observed
+                    despite a number of videos with a high number of views and related video score of 0.</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                </div>
+                <p>The last attribute I explored was the number of comments a video received. This is highly correlated with the number of views as expected; highly viewed videos generate 
+                a large amount of comments. I show the correlation below but will exclude this attribute from the predictive model as it is not available information before the video is
+                posted.</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/NumComs.png" class="img-responsive" alt="Number of comments">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>The number of views a video has received as a function of the number of comments it has. These attributes are strongly correlated.</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                </div>
+                <p>At the end of this analysis I have arrived at a number of attributes that are likely to be informative when predicting the
+                success of a TED talk video. I have examined the date the video was published, the category tags, the related video, and the
+                comments. Having isolated these attributes I train a random forest on a segment of the TED talk dataset. The performance on
+                a test set of reserved data is fairly good at 80%. This suggests that the attributes chosen are indeed effective for predicting
+                the success of a TED talk.</p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Further Reading</a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>A good introduction to the Python package Pandas and random forests is through the <a href="https://www.kaggle.com/c/titanic" target="_blank">
+                Kaggle</a> Titanic tutorial. More information about segmenting data sets can be read about in the textbooks <em>Data Science for 
+                Business</em> or <em>An Introduction to Statistical Learning</em>.</a></p>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+{% endblock %}

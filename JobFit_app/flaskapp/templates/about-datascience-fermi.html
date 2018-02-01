@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block content %}
+<br></br>
+<br></br>
+<div class="container">
+    <div class="jumbotron" height="500">
+        <h1>Neural Networks for Image Recognition</h1>
+    </div>    
+    <div id="accordion" class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Brief Summary</a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>One ubiquitous aspect of ultracold atom experiments is determining the temperature of the gas. This is done by 
+                dropping the gas, letting it expand and then snapping a picture of the distribution of atoms. This process maps the 
+                distribution of atoms when they are trapped onto the distribution of atoms that is imaged in a deterministic way. As 
+                such, by looking at the details of the final image the characteristics of the trapped atoms (namely the temperature) 
+                can be determined. The typical procedure to determine the temperature is through a non-linear fitting routine using 
+                the image of the atoms. However, due to the complicated mathematical form of fitting function this process can be slow
+                and is sensitive to background fluctuations.</a></p>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        <img src="./static/TOFImaging.png" class="img-responsive" alt="TOF Image">
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        <p><em>Atoms are released and allowed to expand before they are imaged. A fitting routine is used to determine the
+                        temperature from the image of the expanded atoms.</em></p>
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        <img src="./static/axialpwaveimages_198p5G.png" class="img-responsive" alt="Fit of Image">
+                    </div>
+                </div>
+                <p>This project details the use of a simple neural network that classifies images of atoms based on their temperature. 
+                After the neural network is trained it can classify the temperature of the expanded atom cloud with similar (or better) 
+                precision than a non-linear fitting routine and in much less time. Additionally, the neural network can be trained on a
+                training set of images with a variety of changing background effects that influence the realiability of the fitting 
+                routine. In a sense, the algorithm is optimized to the exact imaging configuration in the experiment for fast and
+                reliable classification.</p>
+                <p>This algorithm represents a fast and efficient method for classifying the temperature of a gas of ultracold 
+                atoms. It can be trained on images simulated to resemble a variety of imaging configurations making it a versatile tool
+                for diagnostic purposes in an ultracold atoms laboratory.</p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Technical Summary</a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <p>I began this project with a few simplifying assumptions. First, the functional form of the atom distribution involves
+                a polylogarithm. This is a nasty mathematical function that is not handled particularly well in Python. In particular, 
+                there is no numpy implementation. Therefore, I started working with a simpler problem: idnetifying the width of a 
+                Guassian distribution. Second, I reduced the dimensionality of the problem. In practice, the images are 
+                two-dimensional and so this algorithm should determine a width in both directions. To start, I integrated out one of the
+                two directions and just began classifying one-dimensional distributions. Finally, I started with simple, noise-free 
+                distributions and slowly added complexity like Guassian noise and other imaging effects like fringing.</p>
+                <p>The performance of the neural network on a Guassian distribution as a function of the percentage-noise added is shown below. 
+                A non-linear fitting routine performs comparably to the neural network until the signal-to-noise becomes quite small. 
+                For typical experimental noise there is no significant difference between the two analysis methods. Conversely, when adding fringes
+                (as appear randomly in the experiment) the performance of the neural network far exceeds the regression. It should be noted that the
+                neural network correctly identifies the structure introduced by the fringes while the non-linear regression cannot correctly identify
+                the shape as the distribution is now a superposition of two functions. In short, the neural network "learns" about the new shape as 
+                compared to the regression. This seems pretty interesting and highlights the utility of using a neural network. The fringes have a random
+                amplitude and a random phase offset in each image and yet the neural network still identifies the width of the Gaussian bump with perfect
+                accuracy!</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <img src="./static/GaussianPlusNoise.png" class="img-responsive" alt="Identification percentage versus noise">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <p><em>The percentage of incorrect images on data with Guassian noise. Black points show the performance of the neural network
+                        while blue points show the performance of a non-linear regression.</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <img src="./static/FringeAmpl.png" class="img-responsive" alt="Identification percentage versus fringe amplitude">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <p><em>Performance on data with fringes. Black points show the performance of the neural network while blue points show the 
+                        performance of a non-linear regression.</em></p>
+                    </div>
+                </div>
+                <p>Having established an understanding of this simple neural network on a well-understood function I tried to see if I 
+                could optimize the training of the neural network by <em>pre-training</em> on an ideal set of data before introducing 
+                noise. However, this did not yield any significant improvements in the correct classification percentage. As such I moved
+                on to the more complex problem involving the real atom distribution.</p>
+                <p>For an introduction to ultracold Fermi gases see the links provided below. The first problem I faced was generating a 
+                training set. The polylogarithm function is not built-in to the numpy package and therefore is time consuming to 
+                implement in Python. As a workaround I created my training data in Mathematica and subsequently loaded this into Python.
+                This had a steep initial cost in terms of time but after generating the data it can be used in a variety of contexts. I 
+                was initially frustrated with the performance of the neural network. On a training set with no noise I typically found a
+                correct identification percentage of 50 percent. This seemed frustratingly low but can be attributed to the small 
+                differences in the atom distribution as a function of the temperature. One option to improve performance is to 
+                decrease the number of output classification categories but this limits the versatility of the final neural network. Even
+                when limiting the number of classifications to the fewest to still be practically useful, the neural network still incorrectly
+                identified one fifth of the images.</p>
+                <p>I began to worry that the atom distribution does not vary enough from one temperature classification to
+                another as a function of just the input pixels. I modified my existing approach by introducing
+                an intermediate analysis of the images. Instead of simply using the pixels as inputs to the neural network I calculated the 
+                <a href="https://en.wikipedia.org/wiki/Moment_(mathematics)" target="_blank">moments</a> of the distribution and used 
+                those as the values for the input nodes. This did not, however, improve the correct identification percentage.</p>
+                <p>I investigated the cases that were being incorrectly identified and found that the images had corresponding temperatures
+                approaching the Fermi temperature. This confirmed my earlier hypothesis that the atom distribution does not vary enough
+                as a function of the temperature. However, it seemed that this was only true as the temperature was increased. I therefore 
+                revisited my temperature classifications and introduced an upper bound for temperature in the images in my training set. This
+                upper bound on the temperature seemed to solve the classification problem and now all of the images were identified correctly.</p>                
+                <p>Having optimized the classification of ideal images I began to introduce the experimental complications of noise and fringes
+                discussed above. The performance of the neural network on the true atom distribution was similar to the case for a Gaussian
+                discussed previously. When adding random noise the neural network only slightly outperforms the regression. However, the
+                time in which the classification takes place is much faster for the neural network. Similarly, when adding fringes the neural
+                network far outperforms the regression.</p>
+                <p>In practice this tool could be extremely useful for diagnostic checks in an ultracold atom experiment. Once trained the
+                neural network provides real-time classification of the temperature of the atom distribution with comparable fidelity to 
+                the typical regression.</p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Further Reading</a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>Click <a href="https://arxiv.org/pdf/0801.2500v1.pdf" target="_blank">here</a> for more information about fitting the temperature of an ultracold gas of 
+                atoms. The neural network was programmed using Theano following a simple <a href="http://deeplearning.net/tutorial/" target="_blank">tutorial</a>. For 
+                more information about neural networks in general, the <a href="http://neuralnetworksanddeeplearning.com/index.html" target="_blank">online textbook</a> by Michael Nielsen is an
+                accessible resource.</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+{% endblock %}

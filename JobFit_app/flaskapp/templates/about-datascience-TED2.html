@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block content %}
+<br></br>
+<br></br>
+<div class="container">
+    <div class="jumbotron" height="500">
+        <h1>Analyzing Successful (and Unsuccessful) TED Talks</h1>
+    </div>
+    
+    <div id="accordion" class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Brief Summary</a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>Natural language processing (NLP) combines linguistics, statistics and programming to identify patterns
+                and to extract/assign meaning to text and speech. In a data set of TED talks published before 2013, the transcripts 
+                of the talks are included which allows for the analysis of the speech patterns that occur in a highly viewed (or rarely
+                viewed) talk. I began this project by identifying the most viewed and least viewed talks in this data set. Note that
+                the number of views have since changed from the time of the creation of this data set and the number of views is not
+                an objective measure of the relative worth of a video. I'm making a big assumption here that the number of views is
+                correlated with the "success" of a talk. For this project I will assume that the number of views is reflective of the
+                number of people who have watched the video in its entirety and therefore is a reflection of how effective the 
+                construction of the presentation is.</p>
+                <h2><em>Most Viewed:</em> Do Schools Kill Creativity? <small>Ken Robinson</small></h2>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="https://embed.ted.com/talks/ken_robinson_says_schools_kill_creativity" width="854" height="480" style="position:absolute;left:0;top:0;width:100%;height:100%" frameborder="0" scrolling="no" allowfullscreen></iframe>               
+                </div>
+                <h2><em>Least Viewed:</em> Why Eyewitnesses get it Wrong <small>Scott Fraser</small></h2>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="https://embed.ted.com/talks/scott_fraser_the_problem_with_eyewitness_testimony" width="854" height="480" style="position:absolute;left:0;top:0;width:100%;height:100%" frameborder="0" scrolling="no" allowfullscreen></iframe>               
+                </div>
+                <p>I start by analyzing the complexity of the speech patterns in the transcripts and move to understanding the thematic
+                content and presentation techniques that might contribute to a highly viewed talk. Through this analysis I learn a valuable
+                lesson about data science: while two datasets may appear statistically similar out of context, situational (or business) knowledge
+                drives the relevant machine learning techniques that should be used to extract useful data insights.</p>
+                <p>The standard to which I hold each talk is determined by cobbling together <a href="https://blog.ted.com/11-of-the-funniest-ted-talk-spoofs-and-what-speakers-can-learn-from-them/" target="_blank">information</a> about what makes a good TED talk:
+                    <ol>
+                        <li>Contains an idea. Speakers should dig further to find the valuable insight that they can share with the 
+                        audience.</li>
+                        <li>Share one single cohesive idea.</li>
+                        <li>Share an idea that is new. Speakers should present something that is surprising and changes perceptions.</li>
+                        <li>Take your audience on a journey step by step - but don't let them get lost along the way.</li>
+                    </ol>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Technical Summary</a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <p>I started with some basic analysis of the two talks. First I looked at the distribution of the length of words used
+                in each. My hypothesis was the simple speech involving few long words might reach a diverse audience better. This is supported
+                by <a href="https://doi.org/10.1016/j.cognition.2016.04.003" target="_blank">research</a> that conjectures that the length of words is correlated with their complexity. When plotting
+                the distribution of the length of words both talks looked very similar. They each most frequently had four letter words with
+                a decaying tail and no words above approximately fifteen letters. In both cases the mean length of words is around four letters and both distributions
+                look Poissonian. This is interesting to a physicist as we learn about Poissonian distributions in the context of random events
+                occruring like in the radioactive decay of isotopes. For the uninitiated, a Poisson distribution expresses the probability of a discrete number of
+                events occuring in a fixed time if these events occur at a constant rate and independently of the previous occurence. For an isotope that decays this means that three minutes after the
+                last decay and ten minutes after the last decay the probability that the isotope will decay at that instant is the same. In effect, there is <em>no memory</em> of past decay events.</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/WordDist.png" class="img-responsive" alt="Distribution of word lengths">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>The fraction of words in each talk as a function of the word length. Blue points show the most viewed tak while
+                    green points show the least viewed talk. The distributions are very similar.</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                </div>
+                <p>The next thing I looked at was the same distribution but now for sentence length instead of word length. Here, I could not find any research
+                to suggest a trend I could be looking for. Instead, I was working under the hypothesis that long sentences correlated with more information. However,
+                in spoken English this may not be a barrier to a viewer paying attention as a speaker can pace the content in a way written text may not be able to. The distribution
+                still looks Poissonian with a mean sentence length of around 15 words. When comparing the two data sets there is a small spike in frequency of sentences that are longer
+                in the least viewed talk. I am unsure if this is statistically significant.</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/SentLen.png" class="img-responsive" alt="Distribution of sentence lengths">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>The fraction of sentences in each talk as a function of the sentence length. Blue points show the most viewed tak while
+                    green points show the least viewed talk. The distributions are very similar but the least viewed talk has a spike in occurences of longer sentences
+                    that are around fourty words long.</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                </div>
+                <p>Before moving on, there was one final element I wanted to explore and that is instances of the audience laughing which is
+                captured in the transcript by the word "laughter". Effective and enjoyable presentations often incorporate humour and I hypothesized
+                that a successful talk would feature many instances of the audience laughing. The most viewed talk has 22 instances of audience
+                laughter while the least viewed talk has only 6 instances.</p>
+                <p>Having waded into the basic statistical distributions of word and sentence length I wanted to try some more ambitious analysis.
+                I started by tagging the words in the most successful and unsuccessful talks. This basically translates to classifying each word into
+                a word class. These classifications can be things like verbs, nouns, conjucntions, etc. Classifying words in this way can make
+                searches within the text easier in some contexts. It also enables a statistical analysis of the construction of a text. For instance,
+                a good presentation might contain a large number of adjectives while a good piece of technical writing likely has fewer adjectives.</p>
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <img src="./static/WordTagFreq.png" class="img-responsive" alt="Breakdown of word tags">
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    <p><em>The histogram of tag freqeuncy for the word classes in the most viewed (blue) and least viewed (red) talks. The labels for the
+                    categories are suppressed for clarity. The talks are not different from each other in a statistically significant way when looking at
+                    the breakdown into word classes.</em></p>
+                    </div>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                    </div>
+                </div>
+                <p>From the simple statistical analysis of each talk I could not identify any feature that would distinguish a highly viewed talk from a
+                less viewed talk. I had to then wade into a more deep understanding of NLP to attempt to extract content information from each transcript.
+                An easy test was to look at the most common words in each talk to try to understand the themes. The most viewed talk contained the common
+                words "education, children, system, school, human, world, kids". The talk is about the ways in which children learn and how current systems
+                of education should be challenged. The least viewed talk contained the common words "teenagers, trial, judge, fact, memory, shooting". From 
+                this list it was much harder to determine the thematic content and the subject of the talk. Perhaps the seemingly disjointed common words
+                contribute to the lack of views. It could indicate that the objective of the video is not well defined which causes the audience to lose
+                interest. The rule of thumb in presentations is to limit the number of concepts that you want an audience to take away and to link your ideas
+                to the main thesis throughout. This should lead to the themes being easily identified from the list of most common words as by this metric
+                they should occur repeatedly throughout a presentation. This analysis is somewhat limited as I have not looked at the word stems themselves
+                but when using a built in stemmer the trends remain the same between the two talks.</p>
+                <p>Having a basic understanding of the content in each talk (and some simple techniques for processing text) I began to translate the criteria for a good TED talk into
+                metrics that I could test using statistical learning techniques.</p>
+                <h3>Contains an Idea</h3>
+                <p>This is perhaps the easiest criteria to test for. As noted above, a simple frequency analysis of words in the text can provide some insight into
+                the idea being discussed. To make this test more rigorous I use the category tags from the dataset to cross reference the ideas
+                identified in the frequency analysis. In both cases the majority of the category tags appear in the transcript. Surprisingly, not all of the tags appear
+                which I attribute to an actual person assigning category tags. Often the tags missing from a transcript are related in meaning to the other tags and
+                seem to be "catch-all" categories. Just looking at the category tags, both presentations contain an idea and satisfy the first criteria for a good
+                TED talk.</p>
+                <h3>One Cohesive Idea</h3>
+                <p>Determining whether the concepts that appear in a frequency analysis are related is a more complicated question to pose on a computer. From a human
+                perspective it is easy to see that the category tags "children, education, parenting and creativity" might be related. Testing for these relations 
+                using an algorithm is much more complicated. Basically, I want to do a <a href="https://en.wikipedia.org/wiki/Latent_semantic_analysis", target="_blank">latent semantic analysis</a> of each text. I want to extract meaning and relationships
+                between sections and themes of the text. One method to find connections between content in text is to look at the nearby words to establish meaning.
+                For someone with a mathematical background, this means transforming the content into something resembling vectors and quantitatively comparing these vectors.
+                For the purpose of determining how well a talk captures the categorical content it is identified with I will analyze the transcript in the vector space defined by
+                the category tags assuming that these define the cohesive idea of the talk. Good overlap with this vector will indicate semantic similarity. However, it does not 
+                preclude other ideas from being present in the text.</p>
+                <p>The most viewed talk is categorized by the topics "children, creativity, culture, dance, education, and parenting". Doing a <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf" target="_blank">term frequency analysis</a>
+                allows me to construct a vector for the occurence of these words in the text. The raw count is the transpose of (8,5,0,6,22,0,4).
+                But what does this vector tell us? At first glance, this vector suggests that this text "spans" the categorical space fairly well. Nearly every category is
+                literally represented in the frequency analysis. Conversely, the least viewed talk is categorized by the topics "crime, global issues, government, law, memory, mind,
+                prison, and science". The raw count for these words is the transpose of (1,0,0,3,13,1,2,5). While the same number of topics are missing in the transcripts the most viewed
+                talk has a higher total number of occurences of these categorical tags.</p>
+                <p>I'm curious what methods exist to do better than the labels that have been assigned to these talks. If the category tags had not
+                been assigned is there a way I could have found them? To do this I will try to apply the latent semantic analysis using each sentence
+                as a separate document. I will then do a term frequency-inverse document frequency analysis to construct a matrix for each text.
+                Then using <a href="https://en.wikipedia.org/wiki/Singular-value_decomposition" target="_blank">singular value decomposition</a>
+                I will try to reduce the dimensionality of the semantic space to identify correlations in the text.</p>
+                <p>The result is a new matrix of values. But the vector space is still quite large and it is hard to extract useful information
+                from the data. Instead, when presented with data in this form it is easy to test for similarity in each sentence and for similarity in words
+                that occur. For instance, in the most viewed talk I can examine words that are similar semantically to "education". I basically compare the 
+                vector for each other word in the space of all the sentences and look for other words with similar vectors. The words most correlated with "education" are
+                "entrance, protracted, system(s), structure, and shifting". However, these related terms depend strongly on the dimensionality reduction performed in the singular
+                value decomposition. As such it is hard to gain a quantitative understanding of the overlap between the test word and the targets.
+                Still, it is encouraging to see words that may occur in a similar semantic setting like "system". The other correlated words perhaps suggest more about the 
+                context of the discussion surrounding education. While interesting to consider the contextual meaning of words that are related to education it is hard to 
+                gain a quantitative understanding of whether this represents singular ideas.</p>
+                <p>The last piece of information I want to examine is the largest word-pair correlations in the whole corpus. To do this I again look at the full matrix and
+                calculate all of the dot products and then examine the largest values (this can also be done in the reduced dimensional space).
+                While this highlights some words that occurr in sequence it does not reveal many clues as to the labels that should be applied 
+                to the talk.</p>
+                <h3>A New Idea</h3>
+                <p>I could not think of a good way to quantify the "newness" of the topic in the talk. For now I will leave this and come back to it
+                if I am suddenly inspired by a good idea.</p>
+                <h3>The Talk is a Journey</h3>
+                <p>My idea to quantify how the talk is a journey is to look at the semantic correlations between sentences in the talk. The idea is that if the sentences preceding one another are semantically
+                related then there is a progression through the course of the whole talk. In a similar analysis to that described above I use the document (sentence) matrix
+                from the singular value decomposition and calculate the cosine similarity between the vectors for each sentence. I do this for sentence i and i+1 and then
+                for sentence i+1 and i+2 etc. I keep a running sum of the total correlation. Anti-correlated sentences will decrease the total, orthogonal sentences will leave the sum unchanged and 
+                similar sentences will increase the sum. I normalize by the total number of sentences.</p>
+                <p>The most viewed talk has a score of 0.15 while the least viewed talk has a score of 0.09. This suggests that the measure of sentence
+                correlation could provide an indicaiton of the success of storytelling.</p>
+                <p>Take together this analysis has provided me with an introductory understanding of natural language processing and has provided
+                a number of metrics that can be used to evaluate the efficacy of a talk. In a future project I want to analyze the relationships
+                between different talks to see if trends appear.</p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Further Reading</a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>The resource I primarily used to learn NLP was the online book <a href="http://www.nltk.org/book/" target="_blank">Natural 
+                Language Processing with Python</a>. This introduces some basic statistical and linguistic analysis of text and the 
+                functionality of the Python package nltk. The analysis is also informed by the plethora of information about "what makes a
+                successful presentation".</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+{% endblock %} 

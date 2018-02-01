@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<br></br>
+<br></br>
+
+<div class="container">
+    <div class="jumbotron" height="500">
+        <h1>About Me</h1>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+        <p class="lead">I am an analytical thinker who loves to tackle complex problems using a variety of techniques. 
+        Data science has provided the perfect playground to explore complicated real world problems and I want to combine
+        my keen research ability with the fast-paced field of data science as I progress in my career.</p>
+        <p class="lead">I recently graduated with a Ph.D. from the Department of Physics at the University of Toronto with a focus on 
+        experimental quantum optics. I previously completed a M.Sc. in Physics at the University of Toronto and a B.Sc. (hons) in the 
+        Physics Department at the University of British Columbia with a senior thesis in high energy physics.</p>
+        <p class="lead">Outside of my academic experience I have cultivated a diverse teaching record with a focus on social justice and 
+        equity. Through my teaching and volunteer work I encourage equitable and accessible participation for individuals with all kinds of 
+        backgrounds and experience.</p>
+        <p class="lead">Some selected projects I have worked on are listed below:</p>
+        </div>
+    </div>
+        <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-6">
+            <h2>Predicting Successful TED Talks</h2>
+            <p>This project involves utilizing collated data on the number of views a TED talk has received to determine the 
+            key parameters that result in a widely shared and viewed educational video. This analysis extends to other genres of
+            videos as long as they are assigned similar attributes.</p>
+            <p><a href="/TED1" class="btn btn-success">More Info &raquo;</a></p>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-6">
+            <h2>Analysis of TED Talk Content</h2>
+            <p>Understanding what makes a good presentation is the goal of many individuals in business meetings to academic conferences.
+            Using the transcripts of successful (and unsuccessful) TED talks I statistically analyse what patterns in speech make for
+            highly viewed content.</p>
+            <p><a href="./TED2" class="btn btn-success">More Info &raquo;</a></p>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-6">
+            <h2>Hedging Securities to Minimize Risk</h2>
+            <p>In finance, hedging is the practice of purchasing an investment to minimize the risk in holding another investment. In this
+            project I build a simple model that builds a proxy basket of four securities to be hedged such that they track the performance
+            of a target instrument. This algorithm is fast and flexible and can be deployed on varied sets of time series data.</p>
+            <p><a href="/Hedge" class="btn btn-success">More Info &raquo;</a></p>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-6">
+            <h2>Neural Networks for Image Recognition</h2>
+            <p>Fast classification of images is essential in an ultracold atom experiment. This project shows the development of an 
+            algorithm that classifies the temperature of an ultracold atom cloud using a neural network to vastly improve the speed of 
+            image classification in comparison to a non-linear fitting routine.</p>
+            <p><a href="/Fermi" class="btn btn-success">More Info &raquo;</a></p>
+        </div>
+    </div> 
+
+          
+
+{% endblock %}
