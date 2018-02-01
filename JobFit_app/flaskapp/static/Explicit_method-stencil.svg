@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: fig2dev Version 3.2 Patchlevel 5-alpha7 -->
+<!-- CreationDate: Thu Mar 15 10:06:27 2007 -->
+<!-- Magnification: 1.000 -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="264.91199"
+   height="161.73138"
+   viewBox="1635 3045 4033 2235"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="Crank-Nicolson-stencil.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   sodipodi:docbase="/home/berland/tmp"
+   version="1.0">
+  <metadata
+     id="metadata39">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs37">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 80.865692 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="264.91199 : 80.865692 : 1"
+       inkscape:persp3d-origin="132.45599 : 53.910461 : 1"
+       id="perspective22" />
+  </defs>
+  <sodipodi:namedview
+     inkscape:window-height="667"
+     inkscape:window-width="822"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     guidetolerance="10.0"
+     gridtolerance="10.0"
+     objecttolerance="10.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base"
+     showgrid="false"
+     inkscape:zoom="1.5251323"
+     inkscape:cx="118.86704"
+     inkscape:cy="82.419935"
+     inkscape:window-x="48"
+     inkscape:window-y="96"
+     inkscape:current-layer="g4">
+    <inkscape:grid
+       id="GridFromPre046Settings"
+       type="xygrid"
+       originx="0px"
+       originy="0px"
+       spacingx="0.1px"
+       spacingy="0.1px"
+       color="#0000ff"
+       empcolor="#0000ff"
+       opacity="0.2"
+       empopacity="0.4"
+       empspacing="0" />
+  </sodipodi:namedview>
+  <g
+     style="fill:none;stroke:#000000;stroke-width:0.025in"
+     id="g4"
+     transform="translate(-304.29395,-39.539278)">
+    <polyline
+       points="2400,4800 4800,4800 "
+       style="fill:#555500;stroke:#000000;stroke-width:30;stroke-linecap:butt;stroke-linejoin:miter;font-family:Bitstream Vera Sans Mono;font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal;font-size:228.28814657px;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%"
+       id="polyline10"
+       transform="matrix(1.1336844,0,0,1.1336844,-210.352,-476.98039)" />
+<!-- Line -->    <polyline
+       points="3600,4800 3600,3600 "
+       style="fill:#555500;stroke:#000000;stroke-width:30;stroke-linecap:butt;stroke-linejoin:miter;font-family:Bitstream Vera Sans Mono;font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal;font-size:228.28814657px;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%"
+       id="polyline6"
+       transform="matrix(1.1336844,0,0,1.1336844,-210.352,-476.98039)" />
+<!-- Line --><!-- Line --><!-- Text --><!-- Text --><!-- Text --><!-- Text --><!-- Text -->    <text
+       xml:space="preserve"
+       x="3446.2056"
+       y="3262.4165"
+       font-style="normal"
+       font-weight="normal"
+       font-size="240"
+       id="text20"
+       style="font-size:258.80670166px;font-style:oblique;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;stroke:#000000;stroke-width:2.55078983;font-family:Bitstream Vera Sans Mono"
+       sodipodi:linespacing="125%">j,n+1</text>
+<!-- Text --><!-- Circle -->    <circle
+       cx="3600"
+       cy="4800"
+       r="75"
+       style="fill:#be0000;stroke:#000000;stroke-width:30;font-family:Bitstream Vera Sans Mono;font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal;font-size:228.28814657px;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%;fill-opacity:1"
+       id="circle24"
+       sodipodi:cx="3600"
+       sodipodi:cy="4800"
+       sodipodi:rx="75"
+       sodipodi:ry="75"
+       transform="matrix(1.1336844,0,0,1.1336844,-210.352,-476.98039)" />
+<!-- Circle -->    <circle
+       cx="3600"
+       cy="3525"
+       r="75"
+       style="fill:#be0000;stroke:#000000;stroke-width:30;font-family:Bitstream Vera Sans Mono;font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal;font-size:228.28814657px;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%;fill-opacity:1"
+       id="circle26"
+       sodipodi:cx="3600"
+       sodipodi:cy="3525"
+       sodipodi:rx="75"
+       sodipodi:ry="75"
+       transform="matrix(1.1336844,0,0,1.1336844,-210.352,-476.98039)" />
+<!-- Circle --><!-- Circle --><!-- Circle --><!-- Circle -->    <circle
+       cx="4800"
+       cy="4800"
+       r="75"
+       style="fill:#be0000;stroke:#000000;stroke-width:30;font-family:Bitstream Vera Sans Mono;font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal;font-size:228.28814657px;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%;fill-opacity:1"
+       id="circle34"
+       sodipodi:cx="4800"
+       sodipodi:cy="4800"
+       sodipodi:rx="75"
+       sodipodi:ry="75"
+       transform="matrix(1.1336844,0,0,1.1336844,-210.352,-476.98039)" />
+    <text
+       xml:space="preserve"
+       x="2146.7063"
+       y="5364.106"
+       font-style="normal"
+       font-weight="normal"
+       font-size="240"
+       id="text12"
+       style="font-size:258.80671048px;font-style:oblique;font-weight:normal;text-anchor:start;fill:#000000;stroke:#000000;stroke-width:2.55078983;font-family:Bitstream Vera Sans Mono;font-stretch:normal;font-variant:normal;text-align:start;writing-mode:lr;line-height:125%"
+       sodipodi:linespacing="125%">j-1,n</text>
+    <text
+       xml:space="preserve"
+       x="3672.7891"
+       y="5338.2358"
+       font-style="normal"
+       font-weight="normal"
+       font-size="240"
+       id="text14"
+       style="font-size:258.80670166px;font-style:oblique;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;stroke:#000000;stroke-width:2.55078983;font-family:Bitstream Vera Sans Mono"
+       sodipodi:linespacing="125%">j,n</text>
+    <text
+       xml:space="preserve"
+       x="4898.0684"
+       y="5338.2358"
+       font-style="normal"
+       font-weight="normal"
+       font-size="240"
+       id="text16"
+       style="font-size:258.80671048px;font-style:oblique;font-weight:normal;text-anchor:start;fill:#000000;stroke:#000000;stroke-width:2.55078983;font-family:Bitstream Vera Sans Mono;font-stretch:normal;font-variant:normal;text-align:start;writing-mode:lr;line-height:125%"
+       sodipodi:linespacing="125%">j+1,n</text>
+    <circle
+       cx="2400"
+       cy="4800"
+       r="75"
+       style="fill:#be0000;stroke:#000000;stroke-width:30;font-family:Bitstream Vera Sans Mono;font-weight:normal;font-style:oblique;font-stretch:normal;font-variant:normal;font-size:228.28814657px;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%;fill-opacity:1"
+       id="circle32"
+       sodipodi:cx="2400"
+       sodipodi:cy="4800"
+       sodipodi:rx="75"
+       sodipodi:ry="75"
+       transform="matrix(1.1336844,0,0,1.1336844,-210.352,-476.98039)" />
+  </g>
+</svg>
