@@ -22,7 +22,7 @@ In this problem I needed a label for each job transition if it was possible or i
 The function that scrapes job posts is contained in the web application. I have included a stand alone script that processes job posts and saves them to a database in ./DataProcessing/IndeedScraper_v5.ipynb.
 
 <h1>Train a Model</h1>
-I train the model in the file ./DataProcessing/ClassificationAlgorithm.ipynb. The model results are pickled and can be uploaded to the server for use in the web application.
+I train the model in the file ./DataProcessing/Logistic_v2.ipynb. The model results are pickled and can be uploaded to the server for use in the web application.
 
 <h1>Web Application</h1>
 The web application itself and the required html and scripts are contained in ./JobFit_app/
