@@ -45,12 +45,12 @@ db = create_engine('postgres://%s%s/%s'%(user,host,dbname))
 con = None
 con = psycopg2.connect(database = dbname, user = user)
 
-'''
-Uses a trained logistic regression to classify 1 or 0
-1 is easy transition --> smiley face
-2 is hard transition --> frowny face
-'''
+
 def score_btw_jobs(job_title1,job_title2,query_results):
+    '''
+    For two jobs returns the probability of belonging to the positive class
+    (i.e., the transition is possible) using a trained logistic regression
+    '''
     data_out = query_results
     job1 = data_out[data_out['title']==job_title1]
     job2 = data_out[data_out['title']==job_title2]
@@ -227,17 +227,27 @@ def summaries_to_activities(summaries):
     return scores
             
 def filter_stopwords(text):
+    '''
+    Text preprocessing removing stopwords
+    '''
     stopwords = stopwords = set('a about above after again against all am an and any are as at be because been before being below between both but by cannot could did do does doing down during each few for from further had has have having he her here hers herself him himself his how i if in into is it its itself me more most my myself no nor not of off on once only or other ought our ours ourselves out over own same she should so some such than that the their theirs them themselves then there these they this those through to too under until up very was we were what when where which while who whom why with would you your yours yourself yourselves . , : ; / ? ( )'.split())
     filtered_words = [w for w in text if w not in stopwords]
     filtered_words1 = [w for w in filtered_words if len(w)>1]
     return filtered_words1
 
 def clean_summary(summary):
+    '''
+    Text preprocessing to clean job post
+    '''
     sum_test = re.sub(r"([A-Z])", r" \1", summary)
     words_list = nltk.word_tokenize(sum_test.lower())
     return words_list
 
 def get_wordcloud(skills_vector):
+    '''
+    Creates a word cloud of skills from the job posts
+    Not currently used in final product
+    '''
     #Save file in static
     filename = '/Users/christopherluciuk/Desktop/Insight/JobFit_app/flaskapp/static/wordcloud.png'
     #Load
@@ -262,6 +272,9 @@ def get_wordcloud(skills_vector):
     return random.randrange(100000)
 
 def parse_title(job_title):
+    '''
+    Cleaning of job title
+    '''
     pieces = job_title.split()
     title = ''
     count = 0
@@ -274,6 +287,9 @@ def parse_title(job_title):
     return title
 
 def acts_to_skills(acts_vector):
+    '''
+    Matrix transformation from work activities to skills
+    '''
     #Load
     skill_query = """                                                                       
                     SELECT * FROM skills_table;          
@@ -299,6 +315,9 @@ def acts_to_skills(acts_vector):
     return numpy.dot(transformation_mat,acts_vector) #/norm_acts)
 
 def search_titles(test_title,query_results):
+    '''
+    Find titles in the ONET database
+    '''
     title_query = """
                     SELECT * FROM alttitles_table 
                 """
@@ -322,6 +341,11 @@ def search_titles(test_title,query_results):
         return '', success_flag
     
 def get_model_coeff(skills, skills_vector):
+    '''
+    Load in trained model
+    Used to rank the difficulty of skills
+    Not used in final product
+    '''
     skill_query = """                                                                       
                     SELECT * FROM skills_table;          
                   """
@@ -350,6 +374,9 @@ def get_model_coeff(skills, skills_vector):
     return skill_ratings, hot
 
 def get_activity_from_skill(skills):
+    '''
+    Get one representative work activity from ONET for each skill
+    '''
     activities = []
     for skill in skills:
         if skill == 'Reading Comprehension':

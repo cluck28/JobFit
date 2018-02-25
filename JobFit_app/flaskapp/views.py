@@ -19,8 +19,7 @@ import psycopg2
 from flaskapp.clustermodel import score_btw_jobs, skills_rec, scrape_indeed, summaries_to_activities, parse_title, acts_to_skills, get_wordcloud, search_titles, get_model_coeff, get_activity_from_skill
 
 # Python code to connect to Postgres
-# You may need to modify this based on your OS, 
-# as detailed in the postgres dev setup materials.
+# You may need to modify this based on your OS
 user = 'christopherluciuk' #add your Postgres username here      
 host = 'localhost'
 dbname = 'ONET_db_v2'
@@ -31,10 +30,16 @@ con = psycopg2.connect(database = dbname, user = user)
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET','POST'])
 def index():
+    '''
+    Load the home page
+    '''
     return render_template("index.html")
 
 @app.route('/jobFit', methods=['GET','POST'])
 def jobFit():
+    '''
+    Display the results of the transition
+    '''
     #Colour code progress bar
     progress_dict = {1.0:'progress-bar-danger',2.0:'progress-bar-warning',3.0:'progress-bar-success'}
     #Number of recommendations to return
@@ -66,7 +71,7 @@ def jobFit():
             pass
     #Calculation for redirect
     score, prob = score_btw_jobs(job1,job2,skill_query_results)
-    #Test out scraping
+    #Scrape job posts
     search_title = parse_title(job2_post)
     summaries = scrape_indeed(search_title,'new+york')
     #Calculate activity vector
@@ -82,35 +87,56 @@ def jobFit():
     for i in range(len(score_ind)):
         progress_val.append(progress_dict[score_ind[i]])
     #Send to visualization
-    img_alias = get_wordcloud(skills_vector)
+    img_alias = get_wordcloud(skills_vector) #Not used in this version
     work_act = get_activity_from_skill(skills)
     #work_act = ['Something', 'something else', 'the last something']
     return render_template("jobFit.html", job1=job1_post, job2=job2_post, score=score, skills_out = zip(skills,score_list,progress_val,skill_ratings,hot,work_act), img_alias = img_alias, prob = prob) 
 
 @app.route('/aboutJobFit')
 def aboutJobFit():
+    '''
+    About the program
+    '''
     return render_template("aboutJobFit.html")
 
 @app.route('/aboutMe')
 def aboutMe():
+    '''
+    About me
+    '''
     return render_template("aboutMe.html")
 
 @app.route('/contact')
 def contact():
+    '''
+    Contact information
+    '''
     return render_template("contact.html")
 
 @app.route('/TED1')
 def ted1():
+    '''
+    Info about my TED talk project
+    '''
     return render_template("about-datascience-TED.html")
 
 @app.route('/TED2')
 def ted2():
+    '''
+    Continued Info about my TED talk project
+    '''
     return render_template("about-datascience-TED2.html")
 
 @app.route('/Fermi')
 def fermi():
+    '''
+    Info about my image analysis using neural networks
+    '''
     return render_template("about-datascience-fermi.html")   
 
 @app.route('/Hedge')
 def hedge():
+    '''
+    Info about the hedging project
+    '''
     return render_template("about-datascience-hedge.html")                  
