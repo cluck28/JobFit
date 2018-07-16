@@ -61,6 +61,7 @@ def get_jobsum(soup):
     '''
     Get job info from a specific url
     '''
+    summary = '' #Dunno why this broke...
     for item in soup.find_all(name='span', attrs={'class':'summary'}):
         if item is None:
             summary = ''
@@ -150,5 +151,6 @@ if __name__ == "__main__":
     
     #Get summaries of posts
     get_summaries(data)
-    df = pd.DataFrame(data)
-    print(df.head())
+    df = pd.DataFrame(data,columns=['title','company_name','age','date','field','location','url','summary'])
+    #Write to DB
+    
