@@ -1,5 +1,5 @@
 # JobFit
-The tool that I built is called JobFit. It is a web application that identifies the skills deficit separating a user’s current job from their dream job. The final product is hosted at www.christopherluciuk.ca 
+The tool that I built is called JobFit. It is a web application that identifies the skills deficit separating a user’s current job from their dream job.
 
 The pipeline is as follows:
 <ol>
